@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById(R.id.text_view).setOnClickListener() {
+        findViewById(R.id.text_view).setOnClickListener {
             twitter
                     .fetchFavorite("101kaz")
                     .subscribeOn(Schedulers.io())
