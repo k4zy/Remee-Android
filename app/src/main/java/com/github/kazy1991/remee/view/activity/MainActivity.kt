@@ -1,12 +1,15 @@
 package com.github.kazy1991.remee.view.activity
 
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
+import android.view.MenuItem
 import android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM
 import android.view.SubMenu
 import android.widget.Toast
@@ -24,6 +27,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
     val drawerLayout by lazy { findViewById(R.id.drawer_layout) as DrawerLayout }
 
+    val actionBarToggle by lazy {
+        ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close)
+    }
+
     lateinit var mainPresenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +38,29 @@ class MainActivity : AppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
         mainPresenter = MainPresenter(this)
         mainPresenter.onCreate()
+        drawerLayout.addDrawerListener(actionBarToggle)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+        }
         setupNavigationViewClickListener()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        actionBarToggle.syncState()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        actionBarToggle.onConfigurationChanged(newConfig)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (actionBarToggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     fun setupNavigationViewClickListener() {
