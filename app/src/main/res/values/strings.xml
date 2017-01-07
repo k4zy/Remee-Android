@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Remee</string>
+    <string name="channel_menu_title">CHANNELS</string>
+    <string name="others_menu_title">OTHERS</string>
 </resources>
