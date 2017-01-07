@@ -66,6 +66,8 @@ class MainActivity : AppCompatActivity(), MainView {
     fun setupNavigationViewClickListener() {
         navigationView.setNavigationItemSelectedListener {
             drawerLayout.closeDrawers()
+            it.isChecked = true
+            it.isEnabled = true
             when (it.groupId) {
                 R.id.twitter_favorite -> {
                     Toast.makeText(this, "twitter fav", Toast.LENGTH_SHORT).show()
