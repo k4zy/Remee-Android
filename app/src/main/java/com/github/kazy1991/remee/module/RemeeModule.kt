@@ -8,7 +8,7 @@ import com.github.kazy1991.twitterpack.TwitterPack
 
 
 class RemeeModule(private val context: Context) : Module() {
-   
+
     override fun configure() {
         bind(TwitterPack::class.java).to(TwitterPackLazy(context))
     }
