@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import kotlin.NotImplementedError;
@@ -33,10 +34,14 @@ public class DummyTwitterPack implements TwitterPack {
 
     @Override
     public Flowable<List<TweetEntity>> fetchFavorite(String s) {
-        Type listType = new TypeToken<List<TweetEntity>>() {
-        }.getType();
-        List<TweetEntity> tweets = customGson().fromJson(jsonFromAssets("favorite_response.json"), listType);
-        return Flowable.just(tweets);
+        return Flowable.fromCallable(new Callable<List<TweetEntity>>() {
+            @Override
+            public List<TweetEntity> call() throws Exception {
+                Type listType = new TypeToken<List<TweetEntity>>() {
+                }.getType();
+                return customGson().fromJson(jsonFromAssets("favorite_response.json"), listType);
+            }
+        });
     }
 
     @Override
