@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.facebook.drawee.view.SimpleDraweeView
 import com.github.kazy1991.remee.R
 import com.github.kazy1991.twitterpack.entity.TweetEntity
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
 class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>() {
@@ -24,6 +26,9 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tweet = tweets[position]
         holder.textView.text = tweet.text
+        holder.userIconView.setImageURI(tweet.userEntity.profileImageUrlHttps)
+        holder.accountNameView.text = tweet.userEntity.name
+        holder.createdAtView.text = tweet.createdAt.format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))
     }
 
     override fun getItemCount(): Int {
@@ -37,5 +42,8 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val textView by lazy { view.findViewById(R.id.text) as TextView }
+        val userIconView by lazy { view.findViewById(R.id.user_icon) as SimpleDraweeView }
+        val accountNameView by lazy { view.findViewById(R.id.account_name) as TextView }
+        val createdAtView by lazy { view.findViewById(R.id.created_at) as TextView }
     }
 }
