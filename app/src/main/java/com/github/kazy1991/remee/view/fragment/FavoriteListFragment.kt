@@ -1,6 +1,8 @@
 package com.github.kazy1991.remee.view.fragment
 
+import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -28,7 +30,13 @@ class FavoriteListFragment : Fragment() {
 
     val recyclerView by lazy { view?.findViewById(R.id.recycler_view) as RecyclerView }
 
-    val adapter = FavoriteListAdapter()
+    val adapter = object : FavoriteListAdapter() {
+        override fun onClickOgpView(view: View, url: String) {
+            CustomTabsIntent.Builder().build().apply {
+                launchUrl(context, Uri.parse(url))
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         DependencyKit.inject(this)

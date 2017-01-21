@@ -7,14 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.facebook.drawee.view.SimpleDraweeView
+import com.github.kazy1991.ogpview.OgpView
 import com.github.kazy1991.remee.R
 import com.github.kazy1991.twitterpack.entity.TweetEntity
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
-class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>() {
+abstract class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>() {
 
     private val tweets = ArrayList<TweetEntity>()
+
+    abstract fun onClickOgpView(view: View, url: String)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
@@ -29,6 +32,23 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>
         holder.userIconView.setImageURI(tweet.userEntity.profileImageUrlHttps)
         holder.accountNameView.text = tweet.userEntity.name
         holder.createdAtView.text = tweet.createdAt.format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))
+        holder.ogpView.setOnClickListener { view, url -> onClickOgpView(view, url) }
+        holder.ogpView.visibility = View.GONE
+        tweet.entities.urls.firstOrNull()?.let {
+            val text = tweet.text.replaceFirst(tweet.entities.urls[0].url, "")
+            holder.textView.text = text
+
+            holder.ogpView.loadUrl(it.url)
+        }
+        tweet.entities.media?.firstOrNull()?.let {
+            val text = tweet.text.replaceFirst(tweet.entities.media[0].url, "")
+            holder.textView.text = text
+
+            holder.imageView.visibility = View.VISIBLE
+            holder.imageView.setImageURI(it.mediaUrlHttps)
+        } ?: run {
+            holder.imageView.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -45,5 +65,7 @@ class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.ViewHolder>
         val userIconView by lazy { view.findViewById(R.id.user_icon) as SimpleDraweeView }
         val accountNameView by lazy { view.findViewById(R.id.account_name) as TextView }
         val createdAtView by lazy { view.findViewById(R.id.created_at) as TextView }
+        val ogpView by lazy { view.findViewById(R.id.ogp) as OgpView }
+        val imageView by lazy { view.findViewById(R.id.image) as SimpleDraweeView }
     }
 }

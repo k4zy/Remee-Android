@@ -52,6 +52,19 @@
             android:layout_height="wrap_content"
             android:textColor="#1a1c21" />
 
+        <com.github.kazy1991.ogpview.OgpView
+            android:id="@+id/ogp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp" />
+
     </LinearLayout>
 
 </LinearLayout>
