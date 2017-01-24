@@ -47,7 +47,7 @@ class FavoriteListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context).apply { setInitialPrefetchItemCount(10) }
         twitter
                 .fetchFavorite("101kaz")
                 .subscribeOn(Schedulers.io())
