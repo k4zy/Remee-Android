@@ -1,5 +1,6 @@
 package com.github.kazy1991.remee.view.fragment
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
@@ -25,6 +26,8 @@ class FavoriteListFragment : Fragment() {
         }
     }
 
+    val chromeCustomIntent = CustomTabsIntent.Builder().setShowTitle(true).setToolbarColor(Color.parseColor("#4d394b")).build()
+
     @Inject
     lateinit var twitter: TwitterPack
 
@@ -32,9 +35,7 @@ class FavoriteListFragment : Fragment() {
 
     val adapter = object : FavoriteListAdapter() {
         override fun onClickOgpView(view: View, url: String) {
-            CustomTabsIntent.Builder().build().apply {
-                launchUrl(context, Uri.parse(url))
-            }
+            chromeCustomIntent.launchUrl(context, Uri.parse(url))
         }
     }
 
