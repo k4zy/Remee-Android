@@ -32,7 +32,7 @@ abstract class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.Vi
         holder.userIconView.setImageURI(tweet.userEntity.profileImageUrlHttps)
         holder.accountNameView.text = tweet.userEntity.name
         holder.createdAtView.text = tweet.createdAt.format(DateTimeFormatter.ofPattern("MM-dd HH:mm"))
-        holder.ogpView.setOnClickListener { view, url -> onClickOgpView(view, url) }
+        holder.ogpView.setOnClickListener { view, url -> onClickOgpView(view, tweet.entities.urls.first().expandedUrl) }
         holder.imageView.visibility = View.GONE
         holder.ogpView.visibility = View.GONE
 
@@ -41,7 +41,7 @@ abstract class FavoriteListAdapter : RecyclerView.Adapter<FavoriteListAdapter.Vi
             val text = tweet.text.replaceFirst(tweet.entities.urls[0].url, "")
             holder.textView.text = text
 
-            holder.ogpView.loadUrl(it.url)
+            holder.ogpView.loadUrl(it.expandedUrl)
             return
         }
         tweet.entities.media?.firstOrNull()?.let {
